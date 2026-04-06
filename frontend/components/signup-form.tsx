@@ -21,6 +21,7 @@ export function SignupForm({
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter()
+  const [username, setUsername] = React.useState("")
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [confirmPassword, setConfirmPassword] = React.useState("")
@@ -39,7 +40,6 @@ export function SignupForm({
     setIsSubmitting(true)
 
     try {
-      const username = email.split("@")[0] || "user"
       const response = await apiFetch("/auth/signup", {
         method: "POST",
         redirectOnUnauthorized: false,
@@ -47,7 +47,6 @@ export function SignupForm({
           username,
           email,
           password,
-          currency_preference: "INR",
         }),
       })
       const data = await response.json()
@@ -75,22 +74,34 @@ export function SignupForm({
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
                 <p className="text-sm text-balance text-muted-foreground">
-                  Enter your email below to create your account
+                  Add your details below to create your account
                 </p>
               </div>
+              <Field>
+                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Arturus"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  required
+                />
+                <FieldDescription>
+                  You can change this later
+                </FieldDescription>
+              </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="me@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
                 />
                 <FieldDescription>
-                  We&apos;ll use this to contact you. We will not share your
-                  email with anyone else.
                 </FieldDescription>
               </Field>
               <Field>

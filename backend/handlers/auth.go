@@ -25,15 +25,12 @@ func Register(c fiber.Ctx) error {
 
 	req.Username = strings.TrimSpace(req.Username)
 	req.Email = strings.TrimSpace(strings.ToLower(req.Email))
-	req.CurrencyPreference = strings.TrimSpace(strings.ToUpper(req.CurrencyPreference))
+	CurrencyPreference := "INR"
 
 	if req.Username == "" || req.Email == "" || strings.TrimSpace(req.Password) == "" {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"error": "username, email, and password are required",
 		})
-	}
-	if req.CurrencyPreference == "" {
-		req.CurrencyPreference = "INR"
 	}
 
 	hashedPassword, err := utility.HashPassword(req.Password)
@@ -55,7 +52,7 @@ func Register(c fiber.Ctx) error {
 		req.Username,
 		req.Email,
 		hashedPassword,
-		req.CurrencyPreference,
+		CurrencyPreference,
 	).Scan(&userID)
 	if err != nil {
 		return c.Status(http.StatusConflict).JSON(fiber.Map{
@@ -78,7 +75,7 @@ func Register(c fiber.Ctx) error {
 			"user_id":             userID,
 			"username":            req.Username,
 			"email":               req.Email,
-			"currency_preference": req.CurrencyPreference,
+			"currency_preference": CurrencyPreference,
 		},
 	})
 }

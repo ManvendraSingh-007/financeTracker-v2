@@ -13,10 +13,9 @@ type User struct {
 }
 
 type SignupRequest struct {
-	Username           string `json:"username"`
-	Email              string `json:"email"`
-	Password           string `json:"password"`
-	CurrencyPreference string `json:"currency_preference"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type LoginRequest struct {
@@ -90,14 +89,14 @@ type BudgetRequest struct {
 }
 
 type BudgetStatus struct {
-	ID          uint    `json:"budget_id"`
-	Category    string  `json:"category"`
-	AmountLimit float64 `json:"amount_limit"`
+	ID           uint    `json:"budget_id"`
+	Category     string  `json:"category"`
+	AmountLimit  float64 `json:"amount_limit"`
 	CurrentSpent float64 `json:"current_spent"`
-	Remaining   float64 `json:"remaining"`
-	OverBudget  bool    `json:"over_budget"`
-	Month       int     `json:"month"`
-	Year        int     `json:"year"`
+	Remaining    float64 `json:"remaining"`
+	OverBudget   bool    `json:"over_budget"`
+	Month        int     `json:"month"`
+	Year         int     `json:"year"`
 }
 
 type SavingsGoal struct {
