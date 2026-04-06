@@ -1,0 +1,65 @@
+[
+  {
+    "transactionId": "T001",
+    "title": "Salary Deposit",
+    "amount": 85000,
+    "type": "Credited",
+    "category": "Income",
+    "date": "2026-04-01",
+    "description": "Monthly salary credited to primary account."
+  },
+  {
+    "transactionId": "T002",
+    "title": "Apartment Rent",
+    "amount": 22000,
+    "type": "Debited",
+    "category": "Housing & Rent",
+    "date": "2026-04-02",
+    "description": "Rent payment for April."
+  },
+  {
+    "transactionId": "T003",
+    "title": "Groceries",
+    "amount": 3850,
+    "type": "Debited",
+    "category": "Groceries",
+    "date": "2026-04-03",
+    "description": "Weekly supermarket shopping."
+  },
+  {
+    "transactionId": "T004",
+    "title": "Freelance Invoice",
+    "amount": 12500,
+    "type": "Credited",
+    "category": "Side Income",
+    "date": "2026-04-04",
+    "description": "Payment received for freelance design work."
+  },
+  {
+    "transactionId": "T005",
+    "title": "Electricity Bill",
+    "amount": 2640,
+    "type": "Debited",
+    "category": "Utilities",
+    "date": "2026-04-04",
+    "description": "Monthly electricity bill."
+  },
+  {
+    "transactionId": "T006",
+    "title": "Dinner Out",
+    "amount": 1780,
+    "type": "Debited",
+    "category": "Food & Dining",
+    "date": "2026-04-05",
+    "description": "Dinner with friends."
+  },
+  {
+    "transactionId": "T007",
+    "title": "Mutual Fund Redemption",
+    "amount": 9500,
+    "type": "Credited",
+    "category": "Investments",
+    "date": "2026-04-06",
+    "description": "Partial redemption from equity fund."
+  }
+]
