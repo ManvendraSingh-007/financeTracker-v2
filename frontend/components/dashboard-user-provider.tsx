@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "next/navigation"
 
 import { apiFetch } from "@/lib/api"
 
@@ -31,7 +30,6 @@ export function DashboardUserProvider({
 }: {
   children: React.ReactNode
 }) {
-  const pathname = usePathname()
   const [user, setUser] = React.useState<DashboardUser | null>(null)
   const [isLoadingUser, setIsLoadingUser] = React.useState(true)
 
@@ -63,7 +61,7 @@ export function DashboardUserProvider({
     }, 0)
 
     return () => window.clearTimeout(timeoutId)
-  }, [pathname, refreshUser])
+  }, [refreshUser])
 
   React.useEffect(() => {
     function handleFocus() {
