@@ -6,6 +6,7 @@ import { apiFetch } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import {
   Field,
@@ -145,10 +146,13 @@ export function LoginForm({
             </FieldGroup>
           </form>
           <div className="relative hidden bg-muted md:block">
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_bottom,rgba(34,197,94,0.12),transparent_28%)]" />
+            <Image
+              src="/auth-finance-illustration.svg"
+              alt="Finance dashboard illustration"
+              fill
+              priority
+              className="object-cover dark:brightness-[0.9]"
             />
           </div>
         </CardContent>
