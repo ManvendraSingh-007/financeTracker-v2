@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  BellIcon,
   CheckIcon,
   CoinsIcon,
   KeyRoundIcon,
@@ -27,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
 
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -172,6 +172,7 @@ function SaveButton({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function SettingsManager() {
+  const { user, isLoadingUser, refreshUser } = useDashboardUser()
   // Profile
   const [profile, setProfile] = React.useState<ProfileForm>({
     username: "John Doe",
@@ -202,6 +203,22 @@ export function SettingsManager() {
   // Danger zone
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false)
   const [deleteConfirmText, setDeleteConfirmText] = React.useState("")
+
+  React.useEffect(() => {
+    if (!user) {
+      return
+    }
+
+    setProfile((prev) => ({
+      ...prev,
+      username: user.username || prev.username,
+    }))
+
+    setPreferences((prev) => ({
+      ...prev,
+      currency: user.currency_preference || prev.currency,
+    }))
+  }, [user])
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -271,6 +288,8 @@ export function SettingsManager() {
         return;
       }
 
+      await refreshUser()
+      window.dispatchEvent(new Event("currency-preference-updated"))
       setPrefsSaved(true);
     } catch (err) {
       console.error("Failed to save preferences:", err);
@@ -324,6 +343,11 @@ export function SettingsManager() {
         <p className="mt-1 text-sm text-muted-foreground">
           Manage your account, preferences, and notifications.
         </p>
+        {isLoadingUser ? (
+          <p className="mt-2 text-xs text-muted-foreground">
+            Loading current preferences...
+          </p>
+        ) : null}
       </div>
 
       {/* ── Profile ── */}

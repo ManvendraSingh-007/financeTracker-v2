@@ -3,10 +3,10 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { apiFetch } from "@/lib/api"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
 import {
   Sidebar,
   SidebarContent,
@@ -70,50 +70,20 @@ const data = {
 }
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
-  const [user, setUser] = React.useState({
-    name: "Loading user...",
-    email: "Checking session",
-    avatar: "/avatars/shadcn.jpg",
-  })
+  const { user, isLoadingUser } = useDashboardUser()
 
-  React.useEffect(() => {
-    let isMounted = true
-
-    async function loadCurrentUser() {
-      try {
-        const response = await apiFetch("/auth/me", {
-          redirectOnUnauthorized: false,
-        })
-        const data = await response.json()
-
-        if (!isMounted || !response.ok) {
-          return
-        }
-
-        setUser({
-          name: data.user.username || data.user.email,
-          email: data.user.email,
-          avatar: "/avatars/shadcn.jpg",
-        })
-      } catch {
-        if (!isMounted) {
-          return
-        }
-
-        setUser({
-          name: "Finance Tracker",
-          email: "Session unavailable",
-          avatar: "/avatars/shadcn.jpg",
-        })
-      }
-    }
-
-    void loadCurrentUser()
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
+  const navUser = React.useMemo(
+    () => ({
+      name: isLoadingUser
+        ? "Loading user..."
+        : user?.username || user?.email || "Finance Tracker",
+      email: isLoadingUser
+        ? "Loading session"
+        : user?.email || "Session unavailable",
+      avatar: "/avatars/shadcn.jpg",
+    }),
+    [isLoadingUser, user]
+  )
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -143,7 +113,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={navUser} />
       </SidebarFooter>
     </Sidebar>
   )

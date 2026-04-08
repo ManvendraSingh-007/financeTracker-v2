@@ -38,6 +38,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
+import { formatCurrency } from "@/lib/currency"
 
 type AnalyticsResponse = {
   summary: {
@@ -88,15 +90,8 @@ const pieColors = [
   "var(--color-pie_5)",
 ]
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
 export function AnalyticsManager() {
+  const { currencyPreference } = useDashboardUser()
   const [analytics, setAnalytics] = React.useState<AnalyticsResponse | null>(null)
   const [budgets, setBudgets] = React.useState<Budget[]>([])
   const [goals, setGoals] = React.useState<SavingsGoal[]>([])
@@ -205,7 +200,8 @@ export function AnalyticsManager() {
         ? {
           title: "Top expense category",
           message: `${topSpendingCategory.category} is your highest spend at ${formatCurrency(
-            topSpendingCategory.value
+            topSpendingCategory.value,
+            currencyPreference
           )}.`,
           tone: "neutral",
         }
@@ -231,7 +227,7 @@ export function AnalyticsManager() {
         }
         : null,
     ].filter(Boolean) as { title: string; message: string; tone: string }[]
-  }, [budgets, goals, topCategories])
+  }, [budgets, currencyPreference, goals, topCategories])
 
   if (isLoading) {
     return (
@@ -264,7 +260,7 @@ export function AnalyticsManager() {
           <CardHeader>
             <CardDescription>Monthly Income</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(analytics.summary.total_income)}
+              {formatCurrency(analytics.summary.total_income, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -287,7 +283,7 @@ export function AnalyticsManager() {
           <CardHeader>
             <CardDescription>Monthly Expense</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(analytics.summary.total_expense)}
+              {formatCurrency(analytics.summary.total_expense, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -310,7 +306,7 @@ export function AnalyticsManager() {
           <CardHeader>
             <CardDescription>Net Balance</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(analytics.summary.balance)}
+              {formatCurrency(analytics.summary.balance, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -448,7 +444,7 @@ export function AnalyticsManager() {
                     <span className="text-sm">{item.category}</span>
                   </div>
                   <span className="text-sm font-medium">
-                    {formatCurrency(item.value)}
+                    {formatCurrency(item.value, currencyPreference)}
                   </span>
                 </div>
               ))}
@@ -534,8 +530,8 @@ export function AnalyticsManager() {
             <div className="rounded-lg border px-4 py-3">
               <div className="font-medium">Savings Snapshot</div>
               <p className="mt-1 text-sm text-muted-foreground">
-                {formatCurrency(savingsSummary.totalCurrent)} saved out of{" "}
-                {formatCurrency(savingsSummary.totalTarget)} total goal targets.
+                {formatCurrency(savingsSummary.totalCurrent, currencyPreference)} saved out of{" "}
+                {formatCurrency(savingsSummary.totalTarget, currencyPreference)} total goal targets.
               </p>
             </div>
 

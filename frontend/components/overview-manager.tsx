@@ -32,6 +32,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
+import { formatCurrency } from "@/lib/currency"
 
 type OverviewResponse = {
   summary: {
@@ -74,15 +76,8 @@ type OverviewResponse = {
   has_data: boolean
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
 export function OverviewManager() {
+  const { currencyPreference } = useDashboardUser()
   const [data, setData] = React.useState<OverviewResponse | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
   const [error, setError] = React.useState("")
@@ -159,7 +154,7 @@ export function OverviewManager() {
           <CardHeader>
             <CardDescription>Total Balance</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(data.summary.total_balance)}
+              {formatCurrency(data.summary.total_balance, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -180,7 +175,7 @@ export function OverviewManager() {
           <CardHeader>
             <CardDescription>Monthly Spending</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(data.summary.monthly_spending)}
+              {formatCurrency(data.summary.monthly_spending, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -201,7 +196,7 @@ export function OverviewManager() {
           <CardHeader>
             <CardDescription>Savings Current</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums">
-              {formatCurrency(data.summary.savings_current)}
+              {formatCurrency(data.summary.savings_current, currencyPreference)}
             </CardTitle>
             <CardAction>
               <Badge variant="outline">
@@ -215,7 +210,7 @@ export function OverviewManager() {
               Saved across all goals <ArrowUpIcon className="size-4" />
             </div>
             <div className="text-muted-foreground">
-              Target total {formatCurrency(data.summary.savings_target)}
+              Target total {formatCurrency(data.summary.savings_target, currencyPreference)}
             </div>
           </CardFooter>
         </Card>
@@ -337,7 +332,7 @@ export function OverviewManager() {
                     }
                   >
                     {transaction.transaction_type === "income" ? "+" : "-"}
-                    {formatCurrency(transaction.amount)}
+                    {formatCurrency(transaction.amount, currencyPreference)}
                   </div>
                 </div>
               ))
@@ -360,7 +355,7 @@ export function OverviewManager() {
                     <div>
                       <div className="font-medium">{goal.goal_name}</div>
                       <div className="mt-1 text-sm text-muted-foreground">
-                        {formatCurrency(goal.current_amount)} / {formatCurrency(goal.target_amount)}
+                        {formatCurrency(goal.current_amount, currencyPreference)} / {formatCurrency(goal.target_amount, currencyPreference)}
                       </div>
                     </div>
                     <Badge variant="outline">{Math.round(goal.progress_percent)}%</Badge>

@@ -22,6 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
+import { formatCurrency } from "@/lib/currency"
 
 type SavingsGoal = {
   goal_id: number
@@ -47,15 +49,8 @@ const iconMap: Record<string, string> = {
   Education: "ED",
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
 export function SavingsManager() {
+  const { currencyPreference } = useDashboardUser()
   const [goals, setGoals] = React.useState<SavingsGoal[]>([])
   const [goalName, setGoalName] = React.useState("")
   const [targetAmount, setTargetAmount] = React.useState("")
@@ -347,8 +342,8 @@ export function SavingsManager() {
 
                   <div className="mt-5 space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      {formatCurrency(goal.current_amount)} /{" "}
-                      {formatCurrency(goal.target_amount)}
+                      {formatCurrency(goal.current_amount, currencyPreference)} /{" "}
+                      {formatCurrency(goal.target_amount, currencyPreference)}
                     </p>
                     <div className="h-2.5 overflow-hidden rounded-full bg-muted">
                       <div
@@ -367,7 +362,7 @@ export function SavingsManager() {
                             : "No target date"}
                       </span>
                       <span className="text-foreground">
-                        {formatCurrency(goal.monthly_requirement)} / month
+                        {formatCurrency(goal.monthly_requirement, currencyPreference)} / month
                       </span>
                     </div>
                   </div>

@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import {
   flexRender,
   getCoreRowModel,
@@ -43,6 +42,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
+import { formatCurrency } from "@/lib/currency"
 
 export const transactionSchema = z.object({
   id: z.number(),
@@ -101,14 +102,6 @@ const emptyDraft: TransactionDraft = {
   description: "",
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
 function formatTransactionId(id: number) {
   return `T${String(id).padStart(3, "0")}`
 }
@@ -137,7 +130,7 @@ function toRequestPayload(draft: TransactionDraft) {
 }
 
 export function TransactionsManager() {
-  const router = useRouter()
+  const { currencyPreference } = useDashboardUser()
   const [transactions, setTransactions] = React.useState<Transaction[]>([])
   const [selectedId, setSelectedId] = React.useState<number | null>(null)
   const [search, setSearch] = React.useState("")
@@ -239,12 +232,12 @@ export function TransactionsManager() {
             }`}
           >
             {row.original.type === "Credited" ? "+" : "-"}
-            {formatCurrency(row.original.amount)}
+            {formatCurrency(row.original.amount, currencyPreference)}
           </div>
         ),
       },
     ],
-    []
+    [currencyPreference]
   )
 
   const table = useReactTable({

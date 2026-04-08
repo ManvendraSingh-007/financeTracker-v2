@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 
-import { apiFetch } from "@/lib/api"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
 
 export function DashboardAuthGuard({
   children,
@@ -11,53 +11,24 @@ export function DashboardAuthGuard({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const [status, setStatus] = React.useState<"checking" | "authorized" | "unauthorized">(
-    "checking"
-  )
+  const { user, isLoadingUser } = useDashboardUser()
 
   React.useEffect(() => {
-    let isMounted = true
-
-    async function verifySession() {
-      try {
-        const response = await apiFetch("/auth/me", {
-          redirectOnUnauthorized: false,
-        })
-
-        if (!isMounted) {
-          return
-        }
-
-        if (response.ok) {
-          setStatus("authorized")
-          return
-        }
-
-        setStatus("unauthorized")
+    if (!isLoadingUser && !user) {
         router.replace("/auth/login")
-      } catch {
-        if (!isMounted) {
-          return
-        }
-
-        setStatus("unauthorized")
-        router.replace("/auth/login")
-      }
     }
+  }, [isLoadingUser, router, user])
 
-    void verifySession()
-
-    return () => {
-      isMounted = false
-    }
-  }, [router])
-
-  if (status !== "authorized") {
+  if (isLoadingUser) {
     return (
       <div className="flex min-h-svh items-center justify-center bg-background text-sm text-muted-foreground">
         Checking your session...
       </div>
     )
+  }
+
+  if (!user) {
+    return null
   }
 
   return <>{children}</>

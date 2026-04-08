@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useDashboardUser } from "@/components/dashboard-user-provider"
+import { formatCurrency } from "@/lib/currency"
 
 type Budget = {
   budget_id: number
@@ -64,14 +66,6 @@ const budgetCategories = [
   "Savings",
 ]
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
 function getProgressWidth(currentSpent: number, amountLimit: number) {
   if (amountLimit <= 0) {
     return 0
@@ -91,6 +85,7 @@ function getProgressTone(percent: number) {
 }
 
 export function BudgetsManager() {
+  const { currencyPreference } = useDashboardUser()
   const now = React.useMemo(() => new Date(), [])
   const [budgets, setBudgets] = React.useState<Budget[]>([])
   const [month, setMonth] = React.useState(String(now.getMonth() + 1))
@@ -423,8 +418,8 @@ export function BudgetsManager() {
                     </div>
 
                     <p className="mt-5 text-sm text-muted-foreground">
-                      {formatCurrency(budget.current_spent)} /{" "}
-                      {formatCurrency(budget.amount_limit)}
+                      {formatCurrency(budget.current_spent, currencyPreference)} /{" "}
+                      {formatCurrency(budget.amount_limit, currencyPreference)}
                     </p>
 
                     <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-muted">
@@ -448,8 +443,8 @@ export function BudgetsManager() {
                         }
                       >
                         {budget.remaining >= 0
-                          ? `${formatCurrency(budget.remaining)} left`
-                          : `${formatCurrency(Math.abs(budget.remaining))} over`}
+                          ? `${formatCurrency(budget.remaining, currencyPreference)} left`
+                          : `${formatCurrency(Math.abs(budget.remaining), currencyPreference)} over`}
                       </span>
                     </div>
 
