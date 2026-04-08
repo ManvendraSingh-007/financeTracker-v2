@@ -203,32 +203,32 @@ export function AnalyticsManager() {
     return [
       topSpendingCategory
         ? {
-            title: "Top expense category",
-            message: `${topSpendingCategory.category} is your highest spend at ${formatCurrency(
-              topSpendingCategory.value
-            )}.`,
-            tone: "neutral",
-          }
+          title: "Top expense category",
+          message: `${topSpendingCategory.category} is your highest spend at ${formatCurrency(
+            topSpendingCategory.value
+          )}.`,
+          tone: "neutral",
+        }
         : null,
       overBudgetCount > 0
         ? {
-            title: "Budget attention needed",
-            message: `${overBudgetCount} budget ${overBudgetCount === 1 ? "is" : "are"} over limit this month.`,
-            tone: "warning",
-          }
+          title: "Budget attention needed",
+          message: `${overBudgetCount} budget ${overBudgetCount === 1 ? "is" : "are"} over limit this month.`,
+          tone: "warning",
+        }
         : {
-            title: "Budgets on track",
-            message: "No budget has crossed its limit this month.",
-            tone: "positive",
-          },
+          title: "Budgets on track",
+          message: "No budget has crossed its limit this month.",
+          tone: "positive",
+        },
       closestGoal
         ? {
-            title: "Closest savings goal",
-            message: `${closestGoal.goal_name} is ${Math.round(
-              closestGoal.progress_percent
-            )}% complete.`,
-            tone: "positive",
-          }
+          title: "Closest savings goal",
+          message: `${closestGoal.goal_name} is ${Math.round(
+            closestGoal.progress_percent
+          )}% complete.`,
+          tone: "positive",
+        }
         : null,
     ].filter(Boolean) as { title: string; message: string; tone: string }[]
   }, [budgets, goals, topCategories])

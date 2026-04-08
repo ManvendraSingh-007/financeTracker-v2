@@ -14,6 +14,7 @@ func Setup(app *fiber.App) {
 	analytics := app.Group("/analytics", middleware.RequireAuth)
 	budgets := app.Group("/budgets", middleware.RequireAuth)
 	savings := app.Group("/savings", middleware.RequireAuth)
+	settings := app.Group("/settings", middleware.RequireAuth)
 
 	// Auth routes
 	auth.Post("/signup", handlers.Register)
@@ -40,4 +41,9 @@ func Setup(app *fiber.App) {
 	savings.Put("/:id", handlers.UpdateSavingsGoal)
 	savings.Delete("/:id", handlers.DeleteSavingsGoal)
 	savings.Patch("/:id/add", handlers.AddToSavingsGoal)
+
+	settings.Put("/profile", handlers.UpdateProfile)
+	settings.Put("/password", handlers.UpdatePassword)
+	settings.Put("/preferences", handlers.UpdatePreferences)
+	settings.Delete("/account", handlers.DeleteAccount)
 }

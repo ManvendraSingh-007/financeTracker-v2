@@ -172,3 +172,20 @@ type DashboardOverviewResponse struct {
 	Insights           []DashboardOverviewInsight       `json:"insights"`
 	HasData            bool                             `json:"has_data"`
 }
+
+type ProfileUpdate struct {
+	Username string `json:"username"`
+}
+
+type PasswordUpdate struct {
+	CurrentPassword string `json:"currentPassword"`
+	NewPassword     string `json:"newPassword"`
+}
+
+type PreferencesUpdate struct {
+	Currency              string `json:"currency"`
+	Theme                 string `json:"theme"`
+	BudgetAlerts          bool   `json:"budgetAlerts"`
+	GoalAlerts            bool   `json:"goalAlerts"`
+	NotificationFrequency string `json:"notificationFrequency"`
+}

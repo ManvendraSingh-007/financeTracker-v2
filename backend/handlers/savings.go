@@ -5,6 +5,7 @@ import (
 	"errors"
 	"finance-backend/database"
 	"finance-backend/models"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -228,6 +229,7 @@ func AddToSavingsGoal(c fiber.Ctx) error {
 	}
 
 	if err := createSavingsContributionTransaction(ctx, tx, userID, goal, req.Amount); err != nil {
+		log.Printf("savings contribution tx error: %v", err)
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": "Could not record savings contribution transaction"})
 	}
 
