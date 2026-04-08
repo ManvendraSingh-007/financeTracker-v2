@@ -7,9 +7,23 @@ import {
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+
+const baseButtonClassName =
+  "inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+
+const defaultButtonClassName =
+  "h-8 gap-1.5 bg-primary px-2.5 text-primary-foreground hover:bg-primary/90"
+
+const ghostButtonClassName =
+  "h-8 gap-1.5 px-2.5 hover:bg-muted hover:text-foreground"
+
+const outlineLargeButtonClassName =
+  "h-9 gap-1.5 border-border bg-background px-2.5 hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50"
+
+const defaultLargeButtonClassName =
+  "h-9 gap-1.5 bg-primary px-2.5 text-primary-foreground hover:bg-primary/90"
 
 const highlights = [
   {
@@ -59,10 +73,16 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link href="/auth/login" className={cn(buttonVariants({ variant: "ghost" }))}>
+            <Link
+              href="/auth/login"
+              className={cn(baseButtonClassName, ghostButtonClassName)}
+            >
               Login
             </Link>
-            <Link href="/auth/signup" className={cn(buttonVariants())}>
+            <Link
+              href="/auth/signup"
+              className={cn(baseButtonClassName, defaultButtonClassName)}
+            >
               Create account
             </Link>
           </div>
@@ -92,7 +112,8 @@ export default function Home() {
               <Link
                 href="/auth/signup"
                 className={cn(
-                  buttonVariants({ size: "lg" }),
+                  baseButtonClassName,
+                  defaultLargeButtonClassName,
                   "inline-flex items-center justify-center gap-2 whitespace-nowrap"
                 )}
               >
@@ -101,7 +122,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/auth/login"
-                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
+                className={cn(baseButtonClassName, outlineLargeButtonClassName)}
               >
                 I already have an account
               </Link>
