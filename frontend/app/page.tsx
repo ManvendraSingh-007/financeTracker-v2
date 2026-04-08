@@ -2,14 +2,14 @@ import Link from "next/link"
 import {
   ArrowRightIcon,
   ChartColumnIncreasingIcon,
-  DotIcon,
   PiggyBankIcon,
   ShieldCheckIcon,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 const highlights = [
   {
@@ -48,7 +48,7 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <div className="relative flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-emerald-500 text-primary-foreground shadow-sm ring-1 ring-primary/20">
               <ChartColumnIncreasingIcon className="size-5" />
-              <DotIcon className="absolute -right-1 -top-1 size-5 text-emerald-300" />
+              <span className="absolute right-0 top-0 size-2.5 rounded-full bg-emerald-300 ring-4 ring-background" />
             </div>
             <div>
               <p className="text-sm font-semibold">Finance Tracker</p>
@@ -59,12 +59,12 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="ghost">
-              <Link href="/auth/login">Login</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/auth/signup">Create account</Link>
-            </Button>
+            <Link href="/auth/login" className={cn(buttonVariants({ variant: "ghost" }))}>
+              Login
+            </Link>
+            <Link href="/auth/signup" className={cn(buttonVariants())}>
+              Create account
+            </Link>
           </div>
         </header>
 
@@ -89,18 +89,22 @@ export default function Home() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="gap-2">
-                <Link
-                  href="/auth/signup"
-                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap"
-                >
-                  <span>Get Started</span>
-                  <ArrowRightIcon className="size-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/auth/login">I already have an account</Link>
-              </Button>
+              <Link
+                href="/auth/signup"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "inline-flex items-center justify-center gap-2 whitespace-nowrap"
+                )}
+              >
+                <span>Get Started</span>
+                <ArrowRightIcon className="size-4" />
+              </Link>
+              <Link
+                href="/auth/login"
+                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
+              >
+                I already have an account
+              </Link>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
